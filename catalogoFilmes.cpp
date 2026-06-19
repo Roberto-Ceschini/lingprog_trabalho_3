@@ -1,13 +1,15 @@
 #include "catalogoFilmes.h"
 #include <fstream>
 #include <iostream>
+#include <algorithm>
 
 using namespace std;
 
 //-----------------CONSTRUTOR E DESTRUTOR-----------------
 
-CatalogoFilmes::CatalogoFilmes(int _capacidade) {
+CatalogoFilmes::CatalogoFilmes(int _capacidade, string _nomeArquivo) {
     capacidade = _capacidade;
+    nomeArquivo = _nomeArquivo;
     carregarArquivo();
 }
 
@@ -33,6 +35,9 @@ CatalogoFilmes CatalogoFilmes::operator + (const Filme& filme) {
         //ADICIONA O FILME AO CATALOGO
         novoCatalogo.catalogo.push_back(filme);
         cout << "Filme adicionado: " << filme.titulo << endl;
+        //Ordena o catalogo
+        sort(novoCatalogo.catalogo.begin(), novoCatalogo.catalogo.end());
+
     } else {
         cout << "Capacidade maxima atingida." << endl;
     }
@@ -70,6 +75,42 @@ vector<Filme> CatalogoFilmes::operator[](const string& diretor) {
     }
 
     return filmesDoDiretor;
+}
+
+//----SOBRECARGA DO OPERADOR () - ATUALIZACAO NOTA DE UM FILME ----
+bool CatalogoFilmes::operator()(const string &titulo, double novaNota)
+{
+
+    if (novaNota >= 0.0 && novaNota <= 10.0)
+    {
+        for (size_t i = 0; i < catalogo.size(); ++i)
+        {
+            if (catalogo[i].titulo == titulo)
+            {
+                catalogo[i].notaMedia = novaNota;
+                return true;
+            }
+        }
+    }
+
+    return false;
+
+    //tratamento de erro sera feito via menu, ja que o retorno eh bool
+}
+
+//-----------------SOBRECARGA DO OPERADOR > - COMPARACAO DE CATALOGOS POR QTD DE FILMES------
+bool CatalogoFilmes::operator>(const CatalogoFilmes& outro) {
+    return this->catalogo.size() > outro.catalogo.size();
+}
+
+//-----------------SOBRECARGA DO OPERADOR < -----------------
+bool operator < (const Filme& f1, const Filme& f2) {
+
+    if (f1.diretor != f2.diretor) {
+        return f1.diretor < f2.diretor;
+    }
+    
+    return f1.titulo < f2.titulo;
 }
 
 //----------- IMPRESSOESÃO DO CATALOGO E FILME -----------------
