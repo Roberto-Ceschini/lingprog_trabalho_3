@@ -24,9 +24,12 @@ int main() {
     cout << "Conteudo do Catalogo:" << endl;
     cout << meuCatalogo << endl;
 
-    meuCatalogo = meuCatalogo - f5; // Testando a sobrecarga do operador -
+    meuCatalogo = meuCatalogo - f2; // Testando a sobrecarga do operador -
     cout << "Conteudo do Catalogo apos remocao:" << endl;
     cout << meuCatalogo << endl;
+    cout << f5 << endl; // Testando a sobrecarga do operador << para Filme
 
-    return 0; // O destrutor ~CatalogoFilmes será chamado aqui e salvará o .txt!
+
+
+    return 0; // destrutor salva o cataloaogo ao fechar o progrma
 }

@@ -59,6 +59,21 @@ CatalogoFilmes CatalogoFilmes::operator - (const Filme& filme) {
     return novoCatalogo; 
 }
 
+//-----------------SOBRECARGA DO OPERADOR [] - BUSCA POR DIRETOR -----------------
+vector<Filme> CatalogoFilmes::operator[](const string& diretor) {
+    vector<Filme> filmesDoDiretor;
+
+    for (const Filme& filme : catalogo) {
+        if (filme.diretor == diretor) {
+            filmesDoDiretor.push_back(filme);
+        }
+    }
+
+    return filmesDoDiretor;
+}
+
+//----------- IMPRESSOESÃO DO CATALOGO E FILME -----------------
+
 //-----------------SOBRECARGA DO OPERADOR == -----------------
 bool operator == (const Filme& f1, const Filme& f2) {
     return (f1.titulo == f2.titulo);
@@ -101,22 +116,38 @@ void CatalogoFilmes::salvarArquivo(){
 
 //-----------------SOBRECARGA DE OPERADORES << E >> -----------------
 ostream& operator<<(ostream& os, const Filme& filme) {
-
-    os << filme.titulo << endl;
-    os << filme.diretor << endl;
-    os << filme.anoLancamento << endl;
-    os << filme.notaMedia << endl;
+    os << "Titulo: " << filme.titulo << endl;
+    os << "Diretor: " << filme.diretor << endl;
+    os << "Ano: " << filme.anoLancamento << endl;
+    os << "Nota: " << filme.notaMedia << endl;
     return os;
 }
 
 istream& operator>>(istream& is, Filme& filme) {
-
-    getline(is, filme.titulo);
-    getline(is, filme.diretor);
-    is >> filme.anoLancamento;
-    is >> filme.notaMedia;
-     //limpa o caractere de nova linha 
+    string lixo;
     
+    if (is >> lixo) { // Consome a palavra "Titulo:"
+        is.ignore(); // Ignora o espaço em branco depois do ":"
+        getline(is, filme.titulo);
+    }
+    
+    if (is >> lixo) { // Consome a palavra "Diretor:"
+        is.ignore();
+        getline(is, filme.diretor);
+    }
+    
+    if (is >> lixo) { // Consome a palavra "Ano:"
+        is.ignore();
+        is >> filme.anoLancamento;
+    }
+    
+    if (is >> lixo) { // Consome a palavra "Nota:"
+        is.ignore();
+        is >> filme.notaMedia;
+    }
+    
+    is.ignore(); // Limpa o \n
+
     return is;
 }
 

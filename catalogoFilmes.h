@@ -29,6 +29,7 @@ class CatalogoFilmes{
         
         CatalogoFilmes operator + (const Filme&);
         CatalogoFilmes operator - (const Filme&);
+        vector <Filme> operator [] (const string& diretor);
 
     private:
 
